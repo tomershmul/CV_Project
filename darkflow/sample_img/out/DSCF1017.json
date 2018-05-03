@@ -1,0 +1,1 @@
+[{"topleft": {"x": 1898, "y": 717}, "confidence": 0.51, "bottomright": {"x": 2640, "y": 1111}, "label": "bus"}, {"topleft": {"x": 2224, "y": 183}, "confidence": 0.38, "bottomright": {"x": 3070, "y": 610}, "label": "suitcase"}, {"topleft": {"x": 41, "y": 381}, "confidence": 0.19, "bottomright": {"x": 2854, "y": 2364}, "label": "laptop"}]
