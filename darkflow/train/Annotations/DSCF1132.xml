@@ -1,0 +1,35 @@
+<annotation>
+	<filename>DSCF1132.JPG</filename>
+	<size>
+		<width>2736</width>
+		<height>3648</height>
+		<depth>3</depth>
+	</size>
+	<object>
+		<name>bus</name>
+		<bndbox>
+			<xmin>2751</xmin>
+			<ymin>1005</ymin>
+			<xmax>3240</xmax>
+			<ymax>1255</ymax>
+		</bndbox>
+	</object>
+	<object>
+		<name>bus</name>
+		<bndbox>
+			<xmin>2283</xmin>
+			<ymin>1278</ymin>
+			<xmax>3176</xmax>
+			<ymax>1801</ymax>
+		</bndbox>
+	</object>
+	<object>
+		<name>bus</name>
+		<bndbox>
+			<xmin>174</xmin>
+			<ymin>1663</ymin>
+			<xmax>1580</xmax>
+			<ymax>2403</ymax>
+		</bndbox>
+	</object>
+</annotation>
