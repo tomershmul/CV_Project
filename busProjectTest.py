@@ -8,7 +8,7 @@ import numpy as np
 import ast
 
 fontdict = {'fontsize':15, 'weight':'bold'}
-plt.switch_backend('QT4Agg')
+plt.switch_backend('Qt5Agg')
 
 class IMAGE:
 
@@ -113,9 +113,12 @@ def runTest(annFileNameGT, myAnnFileName, busDir , saveDir = None, elapsed = Non
 
         lineGT = writtenAnnsLines['Ground_Truth'][i].replace(' ','')
         lineE = writtenAnnsLines['Estimation'][i].replace(' ','')
+        #print (lineGT)
+        #print (lineE)
         colors = []
         imName = lineGT.split(':')[0]
         bus = os.path.join(busDir, imName)
+        #print (bus)
         image.set_image(bus)
         image.clear_ROIS()
         annsGT = lineGT[lineGT.index(':') + 1:].replace('\n', '')
@@ -124,11 +127,16 @@ def runTest(annFileNameGT, myAnnFileName, busDir , saveDir = None, elapsed = Non
         if (not isinstance(annsGT, tuple)):
             annsGT = [annsGT]
         for ann in annsGT:
+            #print (ann)
             image.add_ROI(ann[:4])
             colorTag = objectsColorsInv[str(ann[4])]
             colors.append(objectsColorsForShow[colorTag])
         numGT = len(annsGT)
         if('[' in lineE):
+            #print (lineE)
+            #print (i)
+            #print (annsE)
+            #print (type(annsE))
             annsE = ast.literal_eval(annsE)
             if (not isinstance(annsE, tuple)):
                 annsE = [annsE]

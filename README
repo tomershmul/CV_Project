@@ -1,0 +1,31 @@
+# Annotation to YOLO XML
+python3 annotationsConvertor.py
+
+
+# Train from VOC weights initialization:
+python3 flow --model cfg/tiny-yolo-1c.cfg --load tiny-yolo-voc.weights --labels labels_1c.txt --train --annotation train/Annotations/ --dataset train/Images/ --epoch 500 --trainer adam
+
+# Train from last check-point:
+python3 flow --model cfg/tiny-yolo-1c.cfg --load -1 --labels labels_1c.txt --train --annotation train/Annotations/ --dataset train/Images/ --epoch 100 --trainer adam
+
+# Run flow:
+python3 flow --model cfg/tiny-yolo-1c.cfg --load -1 --imgdir my_img/  --labels labels_1c.txt  --threshold 0.4 --json
+
+# Json to annotations script
+python3 jsonToAnnotations.py 
+sort my_img/out/my_ann >! my_img/out/my_ann_sorted 
+
+# Run test
+python3 Main.py -myAnns darkflow/my_img/out/my_ann_sorted -anns darkflow/my_img/out/true_ann -buses darkflow/my_img/ -saveDir output_trail
+
+
+
+
+# Check over-fit by running a test on train data
+ python3 flow --model cfg/tiny-yolo-1c.cfg --load -1 --imgdir train/Images/  --labels labels_1c.txt  --threshold 0.4 --json
+ emacs jsonToAnnotations.py
+ python3 jsonToAnnotations.py 
+ sort train/Images/out/my_ann > train/Images/out/my_ann_sorted
+ mkdir output_check_on_train_data_overfit
+ rename 's/jpg/JPG/' darkflow/train/Images/*.jpg
+ python3 Main.py -myAnns darkflow/train/Images/out/my_ann_sorted -anns darkflow/train/Images/out/true_ann -buses darkflow/train/Images -saveDir output_check_on_train_data_overfit

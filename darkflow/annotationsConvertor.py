@@ -19,7 +19,8 @@ def bndbox_parameters(xmin, ymin, xmax, ymax, file):
 
 #Gets image path & file path, print the size section
 def image_parameters(imagePath, file):
-    width, height, depth = np.array(Image.open(imagePath)).shape
+#    width, height, depth = np.array(Image.open(imagePath)).shape
+    height, width, depth = np.array(Image.open(imagePath)).shape
    
 #    print (width, height, depth)
     
