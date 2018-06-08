@@ -12,10 +12,12 @@ python3 flow --model cfg/tiny-yolo-1c.cfg --load -1 --labels labels_1c.txt --tra
 python3 flow --model cfg/tiny-yolo-1c.cfg --load -1 --imgdir my_img/  --labels labels_1c.txt  --threshold 0.4 --json
 
 # Json to annotations script
-python3 jsonToAnnotations.py 
+python3 jsonToAnnotations.py
+rm my_img/out/my_ann_sorted 
 sort my_img/out/my_ann >! my_img/out/my_ann_sorted 
 
 # Run test
+cd ..
 python3 Main.py -myAnns darkflow/my_img/out/my_ann_sorted -anns darkflow/my_img/out/true_ann -buses darkflow/my_img/ -saveDir output_trail
 
 
