@@ -29,9 +29,8 @@ def predict(test_images_set, test_image_labels_onehot):
         return(max_index)
 
 if __name__ == "__main__":
-    test_images_set, test_image_labels_onehot = generate_dataset(testFolder, net_classes, size, Height, Width, color_dict_num)
+    test_images_set, test_image_labels_onehot = generate_dataset(testCropedBusesFolder, net_classes, size, Height, Width, color_dict_num)
     max_index = predict(test_images_set, test_image_labels_onehot)
-    print (max_index)
+#    print (max_index)
     print (test_image_labels_onehot)
     
-

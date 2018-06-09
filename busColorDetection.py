@@ -44,8 +44,8 @@ def generate_dataset_of_one(image, num_of_classes, size, Height, Width, color_di
 def main():
     
     #Generate train & test dataset
-    train_images_set, train_image_labels_onehot = generate_dataset(trainFolder, net_classes, size, Height, Width, color_dict_num)
-    test_images_set, test_image_labels_onehot = generate_dataset(testFolder, net_classes, size, Height, Width, color_dict_num)
+    train_images_set, train_image_labels_onehot = generate_dataset(trainCropedBusesFolder, net_classes, size, Height, Width, color_dict_num)
+    test_images_set, test_image_labels_onehot = generate_dataset(testCropedBusesFolder, net_classes, size, Height, Width, color_dict_num)
     
     #Define CNN 
     X = tf.placeholder(tf.float32, [None, Width, Height, 3], name="X")
@@ -163,9 +163,9 @@ def main():
     print("Test: accuracy:" + str(a) + " loss: " + str(c))
     
     classification = sess.run(Y, feed_dict=test_data)
-    
+    classification = np.argmax(classification, axis=1)
+    print(classification)
     saver.save(sess, modelName, global_step=num_of_itr)
     
 if __name__ == "__main__":
     main()
-

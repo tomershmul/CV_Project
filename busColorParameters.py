@@ -12,7 +12,7 @@ out_L3=6
 out_L4=100 #Fully Connected layer
 
 net_classes=6
-num_of_itr=2000
+num_of_itr=10
 
 
 #Resize Parameters
@@ -20,16 +20,21 @@ Width = 224
 Height = 224
 size = Width, Height
 
-trainFolderPath = os.path.abspath(os.path.join(os.path.curdir,'train'))
-trainFolderPath = os.path.abspath(os.path.join(trainFolderPath, 'Croped_buses'))
-modelPath = os.path.abspath(os.path.join(trainFolderPath, 'Model'))
+rootDir = os.path.abspath(os.path.join(os.path.curdir))
+
+annotationsOrigFileName = 'annotationsTrain.txt' #input annotations File Name
+annotationsOrigFilePath = os.path.abspath(os.path.join(rootDir, annotationsOrigFileName))
+
+allImagesFolder = os.path.abspath(os.path.join(rootDir, 'Images'))
+cropedBusesFolderPath = os.path.abspath(os.path.join(rootDir,'Croped_buses'))
+#trainFolderPath = os.path.abspath(os.path.join(trainFolderPath, 'Croped_buses'))
+modelPath = os.path.abspath(os.path.join(cropedBusesFolderPath, 'Model'))
 modelName = os.path.abspath(os.path.join(modelPath, 'busColorDetector'))
 
 metaFile = modelName +'-'+str(num_of_itr)+'.meta'
 
-trainFolder = os.path.abspath(os.path.join(trainFolderPath, 'train'))
-testFolder = os.path.abspath(os.path.join(trainFolderPath, 'test'))
+trainCropedBusesFolder = os.path.abspath(os.path.join(cropedBusesFolderPath, 'train'))
+trainCropedBusesFolder = os.path.join(trainCropedBusesFolder, '')
 
-trainFolder = trainFolder +"/"#+ '\\'
-testFolder = testFolder +"/"#+ '\\'
-
+testCropedBusesFolder = os.path.abspath(os.path.join(cropedBusesFolderPath, 'test'))
+testCropedBusesFolder = os.path.join(testCropedBusesFolder, '')
