@@ -9,14 +9,9 @@ import shutil
 
 
 def get_bus(image_box, bus_color, imageName, test_flag, aug_flag):
-#    image_box.show()
     color_dict = {'1': 'Green', '2': 'Yellow', '3': 'White', '4': 'Grey', '5': 'Blue', '6': 'Red'}
     busImageName = os.path.basename(str(imageName)).split('.')[0] + '_' + color_dict[str(bus_color)] + str(get_bus.counter[bus_color]) + ".jpg"
-#    image_box_path = os.path.abspath(os.path.join(trainBusesFolder, color_dict[str(bus_color)]))
-#    pathlib.Path(image_box_path).mkdir(parents=True, exist_ok=True) #Create Folder if not exist
-#    image_box_path = os.path.abspath(os.path.join(image_box_path, busImageName))
 
-#    if(get_bus.counter[bus_color] % 5 == 0):
     if(test_flag==1):
         image_box_path = testCropedBusesFolder
     elif (aug_flag==0):
@@ -40,8 +35,6 @@ get_bus.counter = [0, 1, 1, 1, 1, 1, 1] #first element is for easy reading
 
 annotationsOrigFile = open(annotationsOrigFilePath,"r")
 
-#augImagesFolder = os.path.abspath(os.path.join(trainCropedBusesFolder, 'aug_img'))
-
 for line in annotationsOrigFile:    #Read File Line by Line
     #Get image
     imageName = line.split(":")[0]
@@ -57,7 +50,7 @@ for line in annotationsOrigFile:    #Read File Line by Line
     #Handle Objects Parameters
     listObjects=eval(imageObjects.split()[0])   #Split into list of lists
     
-    crop_factor=0.05
+    crop_factor=0.075
     
     if(type(listObjects) is tuple):             #Handle images with MORE than 1 bus
         for i in listObjects:  
@@ -79,11 +72,9 @@ for line in annotationsOrigFile:    #Read File Line by Line
                 
                 aug_flag=0
                 im_box=image.crop((i[0], i[1], i[0] + i[2], i[1] + i[3]))
+                #xmin=i[0] ; ymin=i[1] ; xmax=xmin + i[2] ; ymax=ymin + i[3]
                 get_bus(im_box, color, imageName, test_flag, aug_flag)
-            #xmin=i[0] ; ymin=i[1] ; xmax=xmin + i[2] ; ymax=ymin + i[3]
-#            im_box=image.crop((i[0], i[1], i[0] + i[2], i[1] + i[3]))
-#            im_box=image.crop((xmin, ymin, xmax, ymax))
-#            get_bus(im_box, color, imageName, test_flag, aug_flag)
+            
     if(type(listObjects) is list):             #Handle images with 1 bus
         color=listObjects[4]
         if test_flag:                          #do not change crop size for test images
@@ -103,24 +94,22 @@ for line in annotationsOrigFile:    #Read File Line by Line
             
             aug_flag=0
             im_box=image.crop((listObjects[0], listObjects[1], listObjects[0] + listObjects[2], listObjects[1] + listObjects[3]))
+            #xmin=listObjects[0] ; ymin=listObjects[1] ; xmax=xmin + listObjects[2] ; ymax=ymin + listObjects[3]
             get_bus(im_box, color, imageName, test_flag, aug_flag)
-        #xmin=listObjects[0] ; ymin=listObjects[1] ; xmax=xmin + listObjects[2] ; ymax=ymin + listObjects[3]
-#        im_box=image.crop((listObjects[0], listObjects[1], listObjects[0] + listObjects[2], listObjects[1] + listObjects[3]))
-#        im_box=image.crop((xmin, ymin, xmax, ymax))
-#        get_bus(im_box, color, imageName, test_flag, aug_flag)
-               
+                     
 annotationsOrigFile.close()
 
 #image Augmentation
 
-num_of_Aug_images = 100
+num_of_Aug_images = 200
 
 p = Augmentor.Pipeline(augImagesFolder)
 #p.rotate90(probability=0.5)
 #p.rotate270(probability=0.5)
 #p.flip_left_right(probability=0.8)
 #p.flip_top_bottom(probability=0.3)
-p.crop_random(probability=1, percentage_area=0.8)
+p.rotate(probability=0.7, max_left_rotation=10, max_right_rotation=10)
+p.crop_random(probability=1, percentage_area=0.85)
 p.sample(num_of_Aug_images)
 
 augmentorImagesFolder = os.path.abspath(os.path.join(augImagesFolder, 'output'))
