@@ -2,6 +2,7 @@ import tensorflow as tf
 import math
 import os
 import numpy as np
+from busColorParameters import *
 from PIL import Image
 
 def generate_dataset(folderPath, num_of_classes, size, Height, Width, color_dict_num):
@@ -25,35 +26,22 @@ def generate_dataset(folderPath, num_of_classes, size, Height, Width, color_dict
 
     return folder_images_set, folder_image_labels_onehot
 
+def generate_dataset_of_one(image, num_of_classes, size, Height, Width, color_dict_num):
+    image_set = np.zeros((1,Height,Width,3),dtype=np.float32)
+    image_label = 0 # We don't know the labal at this point
+    idx=0 # only one image
+    image = image.resize(size)
+    image_set[0,:,:,:] = np.array(image)
+
+    #Convert image labels to np.array # this part is redondant for predict...
+    image_label = np.array(image_label)
+    image_label_onehot = np.zeros((1,num_of_classes))
+    image_label_onehot[0][0] = 1  # this part is redondant for predict...
+
+    return image_set, image_label_onehot
+
+    
 def main():
-    color_dict = {'1': 'Green', '2': 'Yellow', '3': 'White', '4': 'Grey', '5': 'Blue', '6': 'Red'}
-    color_dict_num = {'Green': 1, 'Yellow': 2, 'White': 3, 'Grey': 4, 'Blue': 5, 'Red': 6}
-    
-    trainFolderPath = os.path.abspath(os.path.join(os.path.curdir,'train'))
-    trainFolderPath = os.path.abspath(os.path.join(trainFolderPath, 'Croped_buses'))
-    modelPath = os.path.abspath(os.path.join(trainFolderPath, 'Model'))
-    modelName = os.path.abspath(os.path.join(modelPath, 'busColorDetector'))
-    
-    trainFolder = os.path.abspath(os.path.join(trainFolderPath, 'train'))
-    testFolder = os.path.abspath(os.path.join(trainFolderPath, 'test'))
-    
-    trainFolder = trainFolder +"/"#+ '\\'
-    testFolder = testFolder +"/"#+ '\\'
-    
-    #CNN Parameters
-    out_L1=6
-    out_L2=6
-    out_L3=6
-    out_L4=50 #Fully Connected layer
-    
-    net_classes=6
-    num_of_itr=300
-    
-    
-    #Resize Parameters
-    Width = 224
-    Height = 224
-    size = Width, Height
     
     #Generate train & test dataset
     train_images_set, train_image_labels_onehot = generate_dataset(trainFolder, net_classes, size, Height, Width, color_dict_num)
@@ -181,18 +169,3 @@ def main():
 if __name__ == "__main__":
     main()
 
-
-#
-##sess2 = tf.Session()
-#new_graph = tf.Graph()
-#metaFile = modelName + '-1000.meta'
-#
-#with tf.Session(graph=new_graph) as sess2:
-#    sess2.run(init)
-#    new_saver = tf.train.import_meta_graph(metaFile)
-#    new_saver.restore(sess2, tf.train.latest_checkpoint(modelPath))
-#    all_vars = tf.get_collection('vars')
-#    for v in all_vars:
-#        v_ = sess2.run(v)
-#        print(v_)
-#    
