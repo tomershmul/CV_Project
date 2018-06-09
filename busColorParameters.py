@@ -9,10 +9,10 @@ color_dict_num = {'Green': 1, 'Yellow': 2, 'White': 3, 'Grey': 4, 'Blue': 5, 'Re
 out_L1=6
 out_L2=6
 out_L3=6
-out_L4=100 #Fully Connected layer
+out_L4=50 #Fully Connected layer
 
 net_classes=6
-num_of_itr=10
+num_of_itr=1000
 
 
 #Resize Parameters
@@ -38,3 +38,5 @@ trainCropedBusesFolder = os.path.join(trainCropedBusesFolder, '')
 
 testCropedBusesFolder = os.path.abspath(os.path.join(cropedBusesFolderPath, 'test'))
 testCropedBusesFolder = os.path.join(testCropedBusesFolder, '')
+
+augImagesFolder = os.path.abspath(os.path.join(trainCropedBusesFolder, 'aug_img'))
