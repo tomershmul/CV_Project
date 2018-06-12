@@ -18,19 +18,20 @@ def predict(test_images_set, test_image_labels_onehot):
         #    print(v)
         
         X=new_graph.get_tensor_by_name("X:0")
-        Y=new_graph.get_tensor_by_name("Y:0")
+        Y=new_graph.get_tensor_by_name("fc2/Y:0")
         Y_=new_graph.get_tensor_by_name("Y_:0")
-        pkeep=new_graph.get_tensor_by_name("pkeep:0") 
-        test_data={X: test_images_set, Y_: test_image_labels_onehot, pkeep: 1.0}
+        pkeep_conv=new_graph.get_tensor_by_name("pkeep_conv:0") 
+        pkeep_fc=new_graph.get_tensor_by_name("pkeep_fc:0") 
+        test_data={X: test_images_set, Y_: test_image_labels_onehot, pkeep_conv: 1.0, pkeep_fc: 1.0}
         #classification = sess.run(Y, feed_dict={X: test_images_set})
         classification = sess.run(Y, feed_dict=test_data)
         max_index = np.argmax(classification, axis=1)
-        print (max_index)
+        print ("Test-Classification: "+str(max_index))
         return(max_index)
 
 if __name__ == "__main__":
     test_images_set, test_image_labels_onehot = generate_dataset(testCropedBusesFolder, net_classes, size, Height, Width, color_dict_num)
     max_index = predict(test_images_set, test_image_labels_onehot)
 #    print (max_index)
-    print (test_image_labels_onehot)
+    print ("Real-Classification: "+str(np.argmax(test_image_labels_onehot, axis=1)))
     

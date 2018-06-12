@@ -77,13 +77,13 @@ def IOU(boxAList, boxBList):
         maxIouIndex = iou_.index(max(iou_))
         iou.append(maxIou)
         if (maxIouIndex in matches and maxIou > iou[matches[maxIouIndex]]):
-            matches[maxIouIndex] = i
             if (iou[matches[maxIouIndex]] > Th and boxAList[matches[maxIouIndex]][4] == boxBList[maxIouIndex][4]):
                 pass
             elif(maxIou > Th and boxAList[i][4] == boxBList[maxIouIndex][4]):
                 tp += 1
                 missed -= 1
                 fp -= 1
+            matches[maxIouIndex] = i
         if(not maxIouIndex in matches):
             matches[maxIouIndex] = i
             if(maxIou > Th and boxAList[i][4] == boxBList[maxIouIndex][4]):
@@ -112,13 +112,14 @@ def runTest(annFileNameGT, myAnnFileName, busDir , saveDir = None, elapsed = Non
     for i in range(len(writtenAnnsLines['Ground_Truth'])):
 
         lineGT = writtenAnnsLines['Ground_Truth'][i].replace(' ','')
-        lineE = writtenAnnsLines['Estimation'][i].replace(' ','')
-        #print (lineGT)
-        #print (lineE)
         colors = []
         imName = lineGT.split(':')[0]
+        lineE = [x for x in writtenAnnsLines['Estimation'] if imName == x.split(':')[0]]
+        if(len(lineE) == 0):
+            lineE = imName + ':'
+        else:
+            lineE = lineE[0]
         bus = os.path.join(busDir, imName)
-        #print (bus)
         image.set_image(bus)
         image.clear_ROIS()
         annsGT = lineGT[lineGT.index(':') + 1:].replace('\n', '')
@@ -127,16 +128,11 @@ def runTest(annFileNameGT, myAnnFileName, busDir , saveDir = None, elapsed = Non
         if (not isinstance(annsGT, tuple)):
             annsGT = [annsGT]
         for ann in annsGT:
-            #print (ann)
             image.add_ROI(ann[:4])
             colorTag = objectsColorsInv[str(ann[4])]
             colors.append(objectsColorsForShow[colorTag])
         numGT = len(annsGT)
         if('[' in lineE):
-            #print (lineE)
-            #print (i)
-            #print (annsE)
-            #print (type(annsE))
             annsE = ast.literal_eval(annsE)
             if (not isinstance(annsE, tuple)):
                 annsE = [annsE]
@@ -158,11 +154,11 @@ def runTest(annFileNameGT, myAnnFileName, busDir , saveDir = None, elapsed = Non
         text = 'IOU Scores : ' + iouStr + '\nTP = {}, FP = {}, Missed = {} '.format(tp, fp, missed)
         image.show_ROI(edgecolor = colors, title = imName, numGT = numGT , text = text, saveDir = saveDir)
 
-    precision = TP/(TP + FP)
-    recall = TP/(TP + MISS)
     if(TP == 0):
         F1Score = 0
     else:
+        precision = TP/(TP + FP)
+        recall = TP/(TP + MISS)
         F1Score = 2*(precision * recall)/(precision + recall)
     strToWrite = 'Total detections = {}/{}\nTotal False Positives = {}\nTotal missed = {}'.format(TP, TP+MISS, FP, MISS)
     strToWrite += '\nF1 SCORE : {0:.3f}'.format(F1Score)

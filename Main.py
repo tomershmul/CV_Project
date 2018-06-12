@@ -55,7 +55,7 @@ t = my_time()
 
 t.tic()
 
-#run(myAnnFileName, busDir)
+run(myAnnFileName, busDir)
 
 elapsed = t.toc()
 

@@ -7,12 +7,12 @@ color_dict_num = {'Green': 1, 'Yellow': 2, 'White': 3, 'Grey': 4, 'Blue': 5, 'Re
 
 #CNN Parameters
 out_L1=6
-out_L2=6
+out_L2=12
 out_L3=6
 out_L4=50 #Fully Connected layer
 
 net_classes=6
-num_of_itr=1000
+num_of_itr=1400
 
 
 #Resize Parameters

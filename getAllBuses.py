@@ -50,7 +50,7 @@ for line in annotationsOrigFile:    #Read File Line by Line
     #Handle Objects Parameters
     listObjects=eval(imageObjects.split()[0])   #Split into list of lists
     
-    crop_factor=0.075
+    crop_factor=0.01
     
     if(type(listObjects) is tuple):             #Handle images with MORE than 1 bus
         for i in listObjects:  
@@ -101,7 +101,7 @@ annotationsOrigFile.close()
 
 #image Augmentation
 
-num_of_Aug_images = 500
+num_of_Aug_images = 800
 
 p = Augmentor.Pipeline(augImagesFolder)
 p.rotate(probability=0.7, max_left_rotation=10, max_right_rotation=10)
