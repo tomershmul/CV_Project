@@ -12,7 +12,7 @@ out_L3=6
 out_L4=50 #Fully Connected layer
 
 net_classes=6
-num_of_itr=1400
+num_of_itr=10
 
 
 #Resize Parameters
@@ -20,13 +20,21 @@ Width = 224
 Height = 224
 size = Width, Height
 
+#Augmentation Parameters
+crop_factor=0.01
+num_of_Aug_images = 1400
+
+#Files and Folders
 rootDir = os.path.abspath(os.path.join(os.path.curdir))
 
 annotationsOrigFileName = 'annotationsTrain.txt' #input annotations File Name
 annotationsOrigFilePath = os.path.abspath(os.path.join(rootDir, annotationsOrigFileName))
 
 allImagesFolder = os.path.abspath(os.path.join(rootDir, 'Images'))
+allAnnotationsFolder = os.path.abspath(os.path.join(rootDir, 'Annotations'))
+
 cropedBusesFolderPath = os.path.abspath(os.path.join(rootDir,'Croped_buses'))
+
 #trainFolderPath = os.path.abspath(os.path.join(trainFolderPath, 'Croped_buses'))
 modelPath = os.path.abspath(os.path.join(cropedBusesFolderPath, 'Model'))
 modelName = os.path.abspath(os.path.join(modelPath, 'busColorDetector'))
